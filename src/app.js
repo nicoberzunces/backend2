@@ -1,16 +1,11 @@
 import express from 'express';
-import { __dirname } from './utils.js';
+import dotenv from 'dotenv';
 import { AppInit } from './init/initialConfig.js';
-import path from 'path';
+dotenv.config();
 
 const app = express();
-
 AppInit(app);
 
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs'); 
-
-app.listen(process.env.PORT || 8080, () => {
-    console.log(`Servidor corriendo en puerto ${process.env.PORT || 8080}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Servidor en puerto ${process.env.PORT}`);
 });

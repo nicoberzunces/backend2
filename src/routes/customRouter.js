@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
 
-export default class CustomRouter { 
+export default class CustomRouter {
 
     constructor(){
         this.router = Router();
@@ -30,11 +30,11 @@ export default class CustomRouter {
     }
 
     applyCallbacks(cb){
-        return cb.map(callback => async (...params) =>{ 
+        return cb.map(callback => async (...params) =>{ // req, res, next, err, params, sarasa 
             try{
-                await callback.apply(this, params) 
+                await callback.apply(this, params) // ejecuta el callback y le pasa como parametro el array
             }catch (e){
-                return params[1].status(500).send(e) 
+                return params[1].status(500).send(e) // params[1] -> res
             }
         })
     }
@@ -43,13 +43,14 @@ export default class CustomRouter {
         res.success = payload => res.json({ status: 'success', payload })
         res.errorServer = error => res.status(500).json({ status: 'server error', error })
         res.notFound = () => res.status(404).json({ status: 'not found', error: 'Recurso no encontrado' })
+        // otras respuestas genericas.
         next();
     }
 
-    handlePolicies(policies) { 
+    handlePolicies(policies) { // ['PUBLIC','ADMIN','USER','SUPERADMIN']
         return (req, res, next) => {
                 if(policies.includes('PUBLIC')) return next();
-                const reqJWT = req.headers.authorization 
+                const reqJWT = req.headers.authorization // si me da un jwt es porque se logueo o almenos estuvo loqueado
                 if(!reqJWT) return res.status(400).send({status:'error', message: 'no logueado' })
                     let userPayload = null
                 try{

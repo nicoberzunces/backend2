@@ -1,17 +1,11 @@
 import { Router } from "express";
 import { ROUTE_PATH } from "../constants/routesPath.js";
-import ViewsRouter from './views.route.js';
-import UserRouterCustom from "./users.route.js";
-import SessionsRouter from './sessions.route.js'; 
+import ContactRouter from "./contacts.route.js";
+const app = Router()
 
-const app = Router();
+const contactRoute = new ContactRouter;
 
-const UserRouter = new UserRouterCustom();
-
-app.use(ROUTE_PATH.view, ViewsRouter);
-app.use(ROUTE_PATH.api_users, UserRouter.getRouter());
+app.use(ROUTE_PATH.contact, contactRoute.getRouter())
 
 
-app.use('/api/sessions', SessionsRouter);
-
-export default app;
+export default app
