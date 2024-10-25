@@ -3,6 +3,12 @@ import dotenv from 'dotenv';
 import { AppInit } from './init/initialConfig.js';
 dotenv.config();
 
+import mongoInstance from './config/mongoSingleton.js'; 
+
+(async () => {
+    await mongoInstance.connect(); 
+})();
+
 const app = express();
 AppInit(app);
 
